@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bluesky.egoservice.mapper.ActivityMapper">
+    <!--sql语句：根据活动id查询活动确认信息-->
+    <select id="getActivityPublishInfo" resultType="com.bluesky.egoservice.entity.vo.ActivityPublishVo">
+	SELECT act.id,act.title,
+					act.photos,
+					act.activity_time,
+					sub1.title AS subjectLevelOne,
+					sub2.title AS subjectLevelTwo,
+					act.start_time,
+					act.end_time,
+					team.teamname,
+					intro.intro
+	FROM activity act LEFT OUTER JOIN activity_intro intro ON act.id = intro.id
+										LEFT OUTER JOIN team ON act.team_id = team.id
+										LEFT OUTER JOIN activity_subject sub1 ON act.subject_parent_id=sub1.id
+										LEFT OUTER JOIN activity_subject sub2 ON act.subject_id=sub2.id
+										WHERE act.id = #{activityId}
+    </select>
+	<!--sql语句：根据活动id查询前端活动详情信息-->
+	<select id="getBaseActivityInfo" resultType="com.bluesky.egoservice.entity.frontvo.ActivityWebVo">
+	SELECT act.id,act.title,act.apply_max,act.apply_count,act.activity_time,act.start_time,act.end_time,act.photos,intro.intro,
+		act.team_id,team.theme_img,team.theme,team.team_name,sub1.id AS subjectLevelOneId,sub2.id AS subjectLevelTwoId,sub1.title AS subjectLevelOne,sub2.title AS subjectLevelTwo
+	FROM
+		activity AS act
+		LEFT JOIN activity_intro AS intro ON act.id = intro.id
+		LEFT JOIN team ON act.team_id = team.id
+		LEFT JOIN activity_subject AS sub1 ON act.subject_parent_id = sub1.id
+		LEFT JOIN activity_subject AS sub2 ON act.subject_id = sub2.id
+		WHERE act.id = #{id}
+    </select>
+</mapper>
