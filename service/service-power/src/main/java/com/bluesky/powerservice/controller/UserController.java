@@ -71,6 +71,13 @@ public class UserController {
         return R.ok();
     }
 
+    @ApiOperation(value = "根据id获取用户信息")
+    @GetMapping("get/{id}")
+    public R get(@PathVariable String id) {
+        User user = userService.getById(id);
+        return R.ok().data("item",user);
+    }
+
     @ApiOperation(value = "删除管理用户")
     @DeleteMapping("remove/{id}")
     public R remove(@PathVariable String id) {
