@@ -10,7 +10,7 @@
 					sub2.title AS subjectLevelTwo,
 					act.start_time,
 					act.end_time,
-					team.teamname,
+					team.team_name,
 					intro.intro
 	FROM activity act LEFT OUTER JOIN activity_intro intro ON act.id = intro.id
 										LEFT OUTER JOIN team ON act.team_id = team.id
